@@ -28,7 +28,7 @@ services:
       #- node_modules:/vscode/node_modules 
 
     environment:
-      DATABASE_URL: postgresql://postgres:testpassword@db:5432/postgres?sslmode=disable
+      DATABASE_URL: postgresql://postgres:testpassword@db:5432/raumplan?sslmode=disable
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity

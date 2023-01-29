@@ -1,4 +1,12 @@
+[package]
+name = "raumplan"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+raumplan-api = { path = "./api" }
+
+
 [workspace]
-members = [
-    "app",
-]
+members = [".", "api", "migration", "entity"]
+

@@ -1,10 +1,13 @@
 [package]
-name = "app"
+name = "entity"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+name = "entity"
+path = "src/lib.rs"
+
 [dependencies]
-axum = "0.6.4"
-sea-orm = { version = "^0", features = [ "sqlx-postgres", "runtime-tokio-native-tls", "macros" ] }
+sea-orm = { version = "0.10.7" }

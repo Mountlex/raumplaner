@@ -1,5 +1,5 @@
 [package]
-name = "raumplan-api"
+name = "api"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 axum = "0.6.4"
 hyper = { version = "0.14.23", features = ["full"] }
-sea-orm = { version = "^0", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"] }
+sea-orm = { version = "^0", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
 tokio = { version = "1.24.2", features = ["full"] }
 tower = "0.4.13"
 entity = { path = "../entity" }

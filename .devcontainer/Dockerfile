@@ -76,8 +76,8 @@ RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-
    && apt-get autoremove -y && apt-get clean -y
 
 # Install node.
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-RUN sudo apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+RUN sudo apt-get install -y nodejs 
 
 # Create a non-root user
 RUN groupadd --gid $USER_GID $USERNAME \

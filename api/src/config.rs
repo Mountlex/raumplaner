@@ -10,7 +10,6 @@ pub struct Config {
 impl Config {
     pub fn new() -> Config {
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL not set");
-
         Config { database_url }
     }
 

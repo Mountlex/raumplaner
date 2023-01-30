@@ -21,13 +21,12 @@ impl MigrationTrait for Migration {
                     .table(User::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(User::Id)
-                            .integer()
+                        ColumnDef::new(User::UserName)
+                            .string()
                             .not_null()
-                            .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(User::PasswordHash).string().not_null())
+                    .col(ColumnDef::new(User::Password).string().not_null())
                     .col(
                         ColumnDef::new(User::Role)
                             .enumeration(
@@ -36,10 +35,12 @@ impl MigrationTrait for Migration {
                             )
                             .not_null(),
                     )
-                    .col(ColumnDef::new(User::Name).string().not_null())
+                    .col(ColumnDef::new(User::FullName).string().not_null())
                     .to_owned(),
             )
-            .await
+            .await?;
+
+        Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
@@ -64,10 +65,10 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum User {
     Table,
-    Id,
-    PasswordHash,
+    UserName,
+    Password,
     Role,
-    Name,
+    FullName,
 }
 
 #[derive(Iden)]

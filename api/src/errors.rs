@@ -8,6 +8,7 @@ use std::fmt;
 pub enum CustomError {
     FaultySetup(String),
     Database(String),
+    Authorization(String),
 }
 
 // Allow the use of "{}" format specifier
@@ -19,6 +20,7 @@ impl fmt::Display for CustomError {
             CustomError::Database(ref cause) => {
                 write!(f, "Database Error: {cause}")
             }
+            CustomError::Authorization(ref err) => write!(f, "Authorization Error: {err}"),
         }
     }
 }
@@ -29,6 +31,7 @@ impl IntoResponse for CustomError {
         let (status, error_message) = match self {
             CustomError::Database(message) => (StatusCode::UNPROCESSABLE_ENTITY, message),
             CustomError::FaultySetup(message) => (StatusCode::UNPROCESSABLE_ENTITY, message),
+            CustomError::Authorization(message) => (StatusCode::FORBIDDEN, message),
         };
 
         format!("status = {status}, message = {error_message}").into_response()

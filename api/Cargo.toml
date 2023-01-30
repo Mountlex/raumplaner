@@ -14,3 +14,6 @@ tower = "0.4.13"
 entity = { path = "../entity" }
 migration = { path = "../migration" }
 serde_json = "1.0.91"
+axum-login = { version = "0.4.1", features = ["sqlx", "postgres"] }
+rand = { version = "0.8.5", features = ["min_const_gen"] }
+sqlx = { version = "0.6.2", features = ["postgres"] }

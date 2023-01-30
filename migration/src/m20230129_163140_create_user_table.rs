@@ -6,7 +6,14 @@ pub struct Migration;
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        //manager.create_type(extension::postgres::Type::create().as_enum(UserRoleType::Role).values([UserRoleType::Admin, UserRoleType::DefaultUser]).to_owned()).await?;
+        manager
+            .create_type(
+                extension::postgres::Type::create()
+                    .as_enum(UserRoleType::RoleType)
+                    .values([UserRoleType::Admin, UserRoleType::DefaultUser])
+                    .to_owned(),
+            )
+            .await?;
 
         manager
             .create_table(
@@ -21,7 +28,14 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(User::PasswordHash).string().not_null())
-                    .col(ColumnDef::new(User::Role).enumeration(UserRoleType::Role, [UserRoleType::Admin, UserRoleType::DefaultUser]).not_null())
+                    .col(
+                        ColumnDef::new(User::Role)
+                            .enumeration(
+                                UserRoleType::RoleType,
+                                [UserRoleType::Admin, UserRoleType::DefaultUser],
+                            )
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(User::Name).string().not_null())
                     .to_owned(),
             )
@@ -30,11 +44,17 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-        .drop_table(Table::drop().table(User::Table).to_owned())
-        .await?;
-        
-        //manager.drop_type(Type::drop().if_exists().cascade().restrict().name(UserRoleType::Role).to_owned()).await?;
-        
+            .drop_table(Table::drop().if_exists().table(User::Table).to_owned())
+            .await?;
+
+        manager
+            .drop_type(
+                Type::drop()
+                    .if_exists()
+                    .name(UserRoleType::RoleType)
+                    .to_owned(),
+            )
+            .await?;
 
         Ok(())
     }
@@ -47,13 +67,12 @@ enum User {
     Id,
     PasswordHash,
     Role,
-    Name
+    Name,
 }
-
 
 #[derive(Iden)]
 enum UserRoleType {
-    Role,
+    RoleType,
     Admin,
-    DefaultUser
+    DefaultUser,
 }

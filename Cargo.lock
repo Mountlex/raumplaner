@@ -47,12 +47,12 @@ dependencies = [
  "axum",
  "axum-login",
  "entity",
+ "eyre",
  "hyper",
  "migration",
  "rand",
  "sea-orm",
  "serde_json",
- "sqlx",
  "tokio",
  "tower",
 ]
@@ -670,14 +670,6 @@ dependencies = [
  "subtle",
  "time",
  "version_check",
-]
-
-[[package]]
-name = "core"
-version = "0.1.0"
-dependencies = [
- "entity",
- "sea-orm",
 ]
 
 [[package]]
@@ -1884,6 +1876,14 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "rp-core"
+version = "0.1.0"
+dependencies = [
+ "entity",
+ "sea-orm",
 ]
 
 [[package]]

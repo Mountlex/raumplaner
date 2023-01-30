@@ -24,7 +24,7 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
-            let insert = Query::insert()
+        let insert = Query::insert()
             .into_table(Room::Table)
             .columns([Room::Name, Room::Size])
             .values_panic(["MZH 3150".into(), 15.into()])

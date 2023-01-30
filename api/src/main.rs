@@ -7,7 +7,7 @@ use std::net::SocketAddr;
 use auth::{Claims, Role};
 use axum::{
     extract::{Extension, State},
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
 
@@ -21,6 +21,11 @@ use crate::auth::authorize;
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::DEBUG)
+        .with_test_writer()
+        .init();
+
     let config = config::Config::new();
 
     let conn = config.create_connection().await;
@@ -29,7 +34,7 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
-        .route("/login", get(authorize))
+        .route("/login", post(authorize))
         .route("/rooms", get(rooms))
         .layer(Extension(config))
         .with_state(state);

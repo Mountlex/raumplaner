@@ -40,7 +40,7 @@ async fn main() {
         .with_state(state);
 
     // run it
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 5000));
     println!("listening on {addr}");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
@@ -55,9 +55,9 @@ pub struct AppState {
 
 async fn rooms(
     State(state): State<AppState>,
-    claims: Claims,
+    //claims: Claims,
 ) -> Result<Json<Vec<serde_json::Value>>, CustomError> {
-    if claims.role == Role::Admin {
+    //if claims.role == Role::Admin {
         let mzh_rooms: Vec<serde_json::Value> = room::Entity::find()
             .filter(room::Column::Name.contains("MZH"))
             .order_by_asc(room::Column::Name)
@@ -66,7 +66,7 @@ async fn rooms(
             .await?;
 
         Ok(mzh_rooms.into())
-    } else {
-        Err(CustomError::Authorization("not authorized!".into()))
-    }
+  //  } else {
+  //      Err(CustomError::Authorization("not authorized!".into()))
+  //  }
 }

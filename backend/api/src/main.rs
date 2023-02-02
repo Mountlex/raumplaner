@@ -16,6 +16,7 @@ use migration::{Migrator, MigratorTrait};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QueryOrder};
 
 use entity::room;
+use tower_http::cors::CorsLayer;
 
 use crate::auth::authorize;
 
@@ -37,6 +38,7 @@ async fn main() {
         .route("/login", post(authorize))
         .route("/rooms", get(rooms))
         .layer(Extension(config))
+        .layer(CorsLayer::permissive())
         .with_state(state);
 
     // run it
@@ -55,9 +57,9 @@ pub struct AppState {
 
 async fn rooms(
     State(state): State<AppState>,
-    //claims: Claims,
+    claims: Claims,
 ) -> Result<Json<Vec<serde_json::Value>>, CustomError> {
-    //if claims.role == Role::Admin {
+    if claims.role == Role::Admin {
         let mzh_rooms: Vec<serde_json::Value> = room::Entity::find()
             .filter(room::Column::Name.contains("MZH"))
             .order_by_asc(room::Column::Name)
@@ -66,7 +68,7 @@ async fn rooms(
             .await?;
 
         Ok(mzh_rooms.into())
-  //  } else {
-  //      Err(CustomError::Authorization("not authorized!".into()))
-  //  }
+  } else {
+      Err(CustomError::Authorization("not authorized!".into()))
+  }
 }

@@ -1,11 +1,7 @@
 'use client';
 
-export default function HomePage({ rooms })  {
+export default function HomePage()  {
     return (
-        <ul>
-          {rooms.map((room) => (
-            <li>{room.name}</li>
-          ))}
-        </ul>
+        <div>Hello</div>
       )
 }

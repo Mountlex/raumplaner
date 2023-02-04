@@ -5,18 +5,30 @@ export const authRoutes = ["/login"];
 export const publicRoutes = ["/"];
 
 export function middleware(request) {
-  const currentUser = request.cookies.get("currentUser")?.value;
-
+  const token = request.cookies.get("token")?.value;
+  
   if (
-    protectedRoutes.includes(request.nextUrl.pathname) &&
-    (!currentUser || Date.now() > JSON.parse(currentUser).expiredAt)
+    protectedRoutes.includes(request.nextUrl.pathname) && !token
   ) {
-    request.cookies.delete("currentUser");
+    request.cookies.delete("token");
     const response = NextResponse.redirect(new URL("/login", request.url));
-    response.cookies.delete("currentUser");
+    response.cookies.delete("token");
 
     return response;
+  } else {
+    // Clone the request headers and set a new header `x-hello-from-middleware1`
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('authorization', 'Bearer ' + token)
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
+
+  return response
   }
+  
 
 //   if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
 //     return NextResponse.redirect(new URL("/profile", request.url));

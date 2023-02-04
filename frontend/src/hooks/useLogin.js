@@ -3,12 +3,11 @@ import { authService } from "../services";
 
 export const useLogin = () => {
     const login = async (username, password) => {
-      const user = await authService.login(username, password);
-      console.log(user)
-      if (user) {
-        Cookies.set("currentUser", JSON.stringify(user));
+      const token = await authService.login(username, password);
+      if (token) {
+        Cookies.set('token', token);
       }
-      return user;
+      return token;
     };
   
     return { login };

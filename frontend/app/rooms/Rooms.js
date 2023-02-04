@@ -1,6 +1,6 @@
 'use client';
 
-export default function HomePage({ rooms })  {
+export default function Rooms({ rooms })  {
     return (
         <ul>
           {rooms.map((room) => (

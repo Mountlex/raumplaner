@@ -23,7 +23,7 @@ use crate::auth::authorize;
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::DEBUG)
+        .with_max_level(tracing::Level::TRACE)
         .with_test_writer()
         .init();
 
@@ -59,6 +59,7 @@ async fn rooms(
     State(state): State<AppState>,
     claims: Claims,
 ) -> Result<Json<Vec<serde_json::Value>>, CustomError> {
+    println!("{}", claims);
     if claims.role == Role::Admin {
         let mzh_rooms: Vec<serde_json::Value> = room::Entity::find()
             .filter(room::Column::Name.contains("MZH"))
@@ -68,7 +69,7 @@ async fn rooms(
             .await?;
 
         Ok(mzh_rooms.into())
-  } else {
-      Err(CustomError::Authorization("not authorized!".into()))
-  }
+    } else {
+        Err(CustomError::Authorization("not authorized!".into()))
+    }
 }

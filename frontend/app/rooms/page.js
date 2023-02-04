@@ -1,11 +1,12 @@
 // Import your Client Component
-import { getAuthorizationHeader } from '../../src/util/headers';
 import Rooms from './Rooms';
+import { headers } from 'next/headers';
 
 async function getRooms() {
-  const res = await fetch('http://localhost:5000/rooms', { headers: getAuthorizationHeader() });
+  const headersInstance = headers()
+  const authorization = headersInstance.get('authorization')
+  const res = await fetch('http://localhost:5000/rooms', { headers: { authorization } });
   const rooms = await res.json()
-  console.log(rooms)
   return rooms;
 }
 
